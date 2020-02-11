@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Unlayer Editor</title>
+  <meta charset="utf-8" />
+  <script src="https://editor.unlayer.com/embed.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+
+  <script src="https://kit.fontawesome.com/14d055aa76.js" crossorigin="anonymous"></script>
+  <script language="JavaScript" type="text/javascript"
+    src="http://kjur.github.io/jsrsasign/jsrsasign-latest-all-min.js"></script>
+  <link rel="stylesheet" type="text/css" href="assets/css/main.css">
+</head>
+
+<body>
+  <div id="formatTop">
+    <button onClick="goBack()" id="backOuterButton" class="modal-backOuter">BACK</button>
+    <button id="saveTemplateOuterButton" class="modal-savetemplateOuter">
+      SAVE TEMPLATE
+    </button>
+  </div>
+  <div id="entireModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <span class="close"><i class="far fa-times-circle"></i></span>
+
+        <h4 class="templateTitle">Save Template</h4>
+      </div>
+      <div class="modal-body">
+        <label class="modal-templateNameMargin">Template Name</label>
+        <span class="required">*</span>
+        <label class="modal-templateTypeMargin"> Type</label>
+        <span class="required">*</span>
+        <br />
+        <input class="modal-templateNameInput" type="text" id="idInputTemplateName" placeholder="  Insert template name"
+          required />
+        <select name="type" id="idInputTemplateType" class="modal-templateTypeInput" required>
+          <option value="PROMOTION">Promotion</option>
+          <option value="VIDEO">Video</option>
+          <option value="CORPORATE">Corporate</option>
+          <option value="LEAD">Lead</option>
+          <option value="OPTOUT">Optout</option>
+        </select><br />
+        <p id="failed"></p>
+
+        <button class="modal-cancelTemplate" onClick="closebox()">
+          CANCEL
+        </button>
+        <button class="modal-saveTemplate" onClick="onSaveButtonClick(); exportStyle(); checkEmptyFields()" data-export>
+          SAVE TEMPLATE
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="formatCheck">
+    <div id="editor"></div>
+  </div>
+
+  <style type="text/css" id="customCSS">
+    @media (min-width: 1601px) {
+      .sc-fMiknA.bzTKuO {
+        background-color: transparent;
+        left: 0px;
+        margin-bottom: 39%;
+        z-index: 105;
+        border-image: initial;
+        border-width: none;
+        border-style: none;
+      }
+
+      .svg-inline--fa.fa-redo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .svg-inline--fa.fa-undo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .sc-fAjcbJ.hEHgro {
+        display: none;
+      }
+
+      .svg-inline--fa.fa-desktop.fa-w-18.fa-2x {
+        color: black;
+      }
+
+      .svg-inline--fa.fa-mobile.fa-w-10.fa-2x {
+        color: black;
+      }
+
+      .u_body {
+        margin-top: 40px;
+
+      }
+
+      .blockbuilder-preferences.right.sc-fBuWsC.eCSWUJ {
+        display: none;
+      }
+
+      .blockbuilder-preview.design-web.right.sc-jhAzac.bMJOVt {
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 1025px) and (max-width: 1600px) {
+
+      .sc-fMiknA.bzTKuO {
+        background-color: transparent;
+        left: 0px;
+        margin-bottom: 37.5%;
+        z-index: 105;
+        border-color: white;
+        border-width: none;
+        border-style: none;
+      }
+
+      .svg-inline--fa.fa-undo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .svg-inline--fa.fa-redo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .sc-fAjcbJ.hEHgro {
+        display: none;
+      }
+
+      .svg-inline--fa.fa-desktop.fa-w-18.fa-2x {
+        color: black;
+      }
+
+      .svg-inline--fa.fa-mobile.fa-w-10.fa-2x {
+        color: black;
+      }
+
+      .u_body {
+        margin-top: 40px;
+      }
+
+      .blockbuilder-preferences.right.sc-fBuWsC.eCSWUJ {
+        display: none;
+      }
+
+      .blockbuilder-preview.design-web.right.sc-jhAzac.bMJOVt {
+        height: 100%;
+        width: 100%;
+      }
+    }
+
+    @media (min-width: 100px) and (max-width: 1025px) {
+      #editor {
+        height: 50em;
+      }
+
+      .sc-fMiknA.bzTKuO {
+        background-color: transparent;
+        left: 0px;
+        top: 0px;
+        z-index: 105;
+        border-color: white;
+        border-width: none;
+        border-style: none;
+      }
+
+      .blockbuilder-preferences.right.sc-fBuWsC.eCSWUJ {
+        display: none;
+      }
+
+      .blockbuilder-preview.design-web.right.sc-jhAzac.bMJOVt {
+        overflow: hidden;
+        height: 100%;
+        width: 100%;
+      }
+
+      .svg-inline--fa.fa-undo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .svg-inline--fa.fa-redo.fa-w-16.fa-2x {
+        visibility: hidden;
+      }
+
+      .sc-fAjcbJ.hEHgro {
+        display: none;
+      }
+
+      .svg-inline--fa.fa-desktop.fa-w-18.fa-2x {
+        color: black;
+      }
+
+      .svg-inline--fa.fa-mobile.fa-w-10.fa-2x {
+        color: black;
+      }
+
+      .u_body {
+        margin-top: 40px;
+        width: 52em;
+      }
+    }
+  </style>
+
+  <script type="text/javascript">
+    var modal = document.getElementById("entireModal");
+    var btn = document.getElementById("saveTemplateOuterButton");
+    var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+      modal.style.display = "block";
+    };
+    function closebox() {
+      modal.style.display = "none";
+    }
+    span.onclick = function () {
+      modal.style.display = "none";
+    };
+    window.onclick = function (event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    };
+  </script>
+
+  <script type="text/javascript">
+    var globalHeaders;
+    var templateId;
+    var searchFilters;
+    var cssAndHtmlBody;
+    var currentTempleteType;
+    var tempCheck = false;
+    var toolBoxCheck;
+    var check;
+    function goBack() {
+      window.history.back();
+    }
+
+    //To preview Template only
+    if (templateId != null && toolBoxCheck == "false") {
+      window.onload = () => {
+        unlayer.init({
+          id: "editor",
+          projectId: 1234,
+          customJS: ["const removeElements = (elms) => elms.forEach(el => el.remove());removeElements(document.querySelectorAll('.disabled'));removeElements(document.querySelectorAll('.blockbuilder-layer-selector'));"],
+          customCSS: [
+            document.getElementById('customCSS').innerHTML
+          ],
+        });
+      };
+      loadTemplate();
+    }
+    //to Preview the Template and Edit the Template
+    else if (templateId != null && toolBoxCheck == "true") {
+      window.onload = () => {
+        unlayer.init({
+          id: "editor",
+          projectId: 1234,
+          customCSS: ["@media (min-width: 1601px) {.sc-fAjcbJ.hEHgro{display:none;}.svg-inline--fa.fa-mobile.fa-w-10.fa-2x{color:black;} .svg-inline--fa.fa-desktop.fa-w-18.fa-2x{color:black;} .sc-fMiknA.bzTKuO { background-color:transparent; left: 0px; margin-bottom: 39%; z-index: 105; border-width: none; border-style: none; border-image: initial; }.u_body { margin-top: 40px }} @media (min-width: 1025px) and (max-width: 1600px) {.sc-fAjcbJ.hEHgro{display:none;} .svg-inline--fa.fa-mobile.fa-w-10.fa-2x{color:black;}  .u_body { margin-top: 40px }.svg-inline--fa.fa-desktop.fa-w-18.fa-2x{color:black;} .sc-fMiknA.bzTKuO { background-color:white; left: 0px; margin-bottom: 37.5%; z-index: 105; border-width: none; border-style: none;}"],
+        });
+      };
+      loadTemplate();
+    }
+    //When click on new Template
+    else if (templateId == null) {
+      window.onload = () => {
+        unlayer.init({
+          id: "editor",
+          projectId: 1234,
+          customCSS: ["@media (min-width: 1601px) { .sc-fAjcbJ.hEHgro{display:none;}.svg-inline--fa.fa-mobile.fa-w-10.fa-2x{color:black;} .svg-inline--fa.fa-desktop.fa-w-18.fa-2x{color:black;} .sc-fMiknA.bzTKuO { background-color:transparent; left: 0px; margin-bottom: 39%; z-index: 105; border-width: none; border-style: none; border-image: initial; }.u_body { margin-top: 40px }} @media (min-width: 1025px) and (max-width: 1600px) {.sc-fAjcbJ.hEHgro{display:none;} .svg-inline--fa.fa-mobile.fa-w-10.fa-2x{color:black;}  .u_body { margin-top: 40px }.svg-inline--fa.fa-desktop.fa-w-18.fa-2x{color:black;} .sc-fMiknA.bzTKuO { background-color:transparent;  left: 0; margin-bottom: 37.5%; z-index: 105; border-width: none; border-style: none; }"],
+        });
+      };
+
+    }
+
+    function exportStyle() {
+      unlayer.saveDesign(function (design) {
+        if (design) {
+          bodyDesignInJsonFormat = design;
+        } else console.log("Fetching Design is Unsuccessful!");
+      });
+
+      unlayer.exportHtml(function (data) {
+        if (data) {
+          cssAndHtmlBody = data.html;
+        } else console.log("Fetching HTML and CSS is Successful!");
+      });
+      templateId;
+    }
+    //Get Name and Type of Template
+    function onSaveButtonClick() {
+      var currentName = document.getElementById("idInputTemplateName");
+      var currenttype = document.getElementById("idInputTemplateType");
+      var theName = currentName.value;
+      var theType = currenttype.value;
+      tempCheck = false;
+      searchFilters = theName;
+
+      //Call SaveTemplate on save button in the UI
+      if (checkEmptyFields) {
+        var templateJsonName = { NAME: searchFilters };
+        var finalUrl;// Your URL
+        $.ajax({
+          type: "GET",
+          headers: globalHeaders,
+          url: finalUrl,
+          contentType: "application/json",
+          success: function (serviceResponse) {
+            var i;
+            if (serviceResponse) {
+              for (i = 0; i < serviceResponse.content.length; i++) {
+                if (theName == serviceResponse.content[i].name) {
+                  tempCheck = true;
+                  check.innerHTML = null;
+                  check.innerHTML = "Template Name already exists".fontcolor(
+                    "red"
+                  );
+                  var border = (document.getElementById(
+                    "idInputTemplateName"
+                  ).style.borderColor = "red");
+                  break;
+                } else {
+                  tempCheck = false;
+                }
+              }
+              if (tempCheck == false) {
+                saveTemplate(theName, theType);
+              }
+            }
+          },
+          error: function (errorResponse) {
+            console.log(
+              "saveTemplate errorResponse: " + JSON.stringify(errorResponse)
+            );
+          }
+        });
+      }
+    }
+    //Save this Template in the database; either POST or PUT
+    function saveTemplate(name, type) {
+      //Check Template Name is entered or not and it doesnot exist in Database
+      if (checkEmptyFields() && tempCheck == false) {
+        //Check Template is exported or not
+
+        if (templateId != null && typeof templateId !== "undefined")
+          currentTempleteType = "PUT";
+        else currentTempleteType = "POST";
+
+        var template = {
+          id: templateId,
+          name: name,
+          body: cssAndHtmlBody,
+          jsonBody: JSON.stringify(bodyDesignInJsonFormat),
+          css: "CSS is loaded into body element with HTML",
+          type: type,
+          global: true,
+          deleted: false
+        };
+        var finalUrl;//your URL
+
+        var requestType = currentTempleteType;
+        $.ajax({
+          type: requestType,
+          headers: globalHeaders,
+          url: finalUrl,
+          contentType: "application/json",
+          dataType: "json",
+          data: JSON.stringify(template),
+          success: function (serviceResponse) {
+            //You can get the whole response from this log
+            var modal = document.getElementById("entireModal");
+            modal.style.display = "none";
+          },
+          error: function (errorResponse) {
+            console.log(
+              "saveTemplate errorResponse: " + JSON.stringify(errorResponse)
+            );
+            if (errorResponse && errorResponse.responseText) {
+              var responseText = JSON.parse(errorResponse.responseText);
+              if (responseText && responseText.errorMessage) {
+                console.log("error", responseText.errorMessage);
+              }
+            }
+          }
+        });
+      }
+    }
+
+    //Validate the Template Name box, empty or not
+    $("#idInputTemplateName")
+      .change(validate)
+      .keyup(validate);
+    function validate() {
+      var textBox = $(this);
+      check = document.getElementById("failed");
+      if (textBox.val() == 0) {
+        check.innerHTML = "Enter Template Name".fontcolor("red");
+        var border = (document.getElementById(
+          "idInputTemplateName"
+        ).style.borderColor = "red");
+      } else {
+        check.innerHTML = null;
+        var border = (document.getElementById(
+          "idInputTemplateName"
+        ).style.borderColor = "gray");
+        tempCheck = false;
+      }
+    }
+
+    //Get Request; get the specific Template from the db and load it into the iFrame
+    function loadTemplate() {
+      if (toolBoxCheck == "false") {
+        var modal = document.getElementById("entireModal");
+        var saveBtn = document.getElementById("saveTemplateOuterButton");
+        var backBtn = document.getElementById("backOuterButton");
+        saveBtn.style.display = "none";
+        backBtn.style.display = "none";
+        modal.style.display = "none";
+      }
+      var finalUrl;//Your URL
+      $.ajax({
+        type: "GET",
+        headers: globalHeaders,
+        url: finalUrl,
+        success: function (serviceResponse) {
+          if (serviceResponse) {
+            if (serviceResponse.deleted == false) {
+              unlayer.loadDesign(JSON.parse(serviceResponse.jsonBody));
+            }
+            else console.log("Template with this id does not exist!");
+          }
+        },
+        error: function (errorResponse) {
+          console.log(
+            "templates errorResponse: " + JSON.stringify(errorResponse)
+          );
+          if (errorResponse && errorResponse.responseText) {
+            var responseText = JSON.parse(errorResponse.responseText);
+            if (responseText && responseText.errorMessage) {
+              console.log(responseText.errorMessage, "error");
+            }
+          }
+        }
+      });
+    }
+    //Delete the Template by using its ID, it will take the TemplateID from the URL and it will delete that Template
+    function deleteTemplate() {
+      var finalUrl;//Your URL
+      $.ajax({
+        type: "DELETE",
+        headers: globalHeaders,
+        url: finalUrl,
+        success: function (json) {
+          console.log("Template Deleted");
+          loadTemplate();
+        },
+        error: function (errorResponse) {
+          console.log(
+            ">> deleteTemplate errorResponse: " +
+            JSON.stringify(errorResponse)
+          );
+          if (errorResponse && errorResponse.responseText) {
+            var responseText = JSON.parse(errorResponse.responseText);
+            if (responseText && responseText.errorMessage) {
+              console.log(responseText.errorMessage, "error");
+            }
+          }
+        }
+      });
+    }
+    function checkEmptyFields() {
+      var input = document.getElementById("idInputTemplateName");
+      if (input.value.length == 0) {
+        return false;
+      } else return true;
+    }
+  </script>
+</body>
+
+</html>
